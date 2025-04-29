@@ -131,7 +131,6 @@ const deployment = new k8s.apps.v1.Deployment("northstar", {
                         { name: "ns-mods-pvc", mountPath: "/mnt/mods" },
                     ],
                 },
-                // init container to use git to clone the mods repo
                 {
                     name: "git-clone",
                     image: "alpine/git",
