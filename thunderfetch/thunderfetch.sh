@@ -18,4 +18,8 @@ if [ ! -f $mod_zip ]; then
 fi
 echo $mod_zip
 # extract the mod zip to /mnt/mods
-unzip -o $mod_zip -d /mnt/mods/
+unzip -o $mod_zip -d /mnt/ "mods/*"
+if [ $? -ne 0 ]; then
+  echo "Failed to extract $mod_zip"
+  exit 1
+fi

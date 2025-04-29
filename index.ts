@@ -111,6 +111,19 @@ const deployment = new k8s.apps.v1.Deployment("northstar", {
             ],
             initContainers: [
                 {
+                    name: "fixpermissions",
+                    image: "alpine",
+                    command: ["sh", "-c", "chown -R 1000:1000 /mnt/titanfall && chown -R 1000:1000 /mnt/mods"],
+                    volumeMounts: [
+                        { name: "ns-pvc", mountPath: "/mnt/titanfall" },
+                        { name: "ns-mods-pvc", mountPath: "/mnt/mods" },
+                    ],
+                    securityContext: {
+                        runAsUser: 0,
+                        runAsGroup: 0,
+                    }
+                },
+                {
                     name: "nsfetch",
                     image: nsfetch.imageName,
                     volumeMounts: [

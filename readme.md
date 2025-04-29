@@ -16,6 +16,3 @@ Because the default has saftey checks that prevent re-writing the core mods, to 
 The current PVC setup is *highly* opionated and is based around the assumption of using ceph, review those sections and update to fit your storage. *Technically* these could be done as empty dirs instead of retaining any storage but that means pulling the titanfall core files, the experimental branch mods, and the extraction mod *every* time you restart the server.
 
 Networking on this assumes you have *some* kind of Loadbalancer configured, if you don't you'll need to modify the deployment to handle a nodeport or something horrific like that.
-
-## TODO
-Add support to get the latest version of the mod and install it in an init container, currently you'll need to exec into the northstar container and install the mod package yourself.
