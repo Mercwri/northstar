@@ -1,0 +1,3 @@
+[submodule "northstar-dedicated"]
+	path = northstar-dedicated
+	url = https://github.com/Mercwri/northstar-dedicated.git
