@@ -33,7 +33,7 @@ const tfpvc = new k8s.core.v1.PersistentVolumeClaim("northstar-pvc", {
         accessModes: ["ReadWriteOnce"],
         resources: {
             requests: {
-                storage: "20Gi",   // Adjust the size as needed
+                storage: "20Gi",
             },
         },
         storageClassName: "rook-ceph-block",
@@ -46,7 +46,7 @@ const modspvc = new k8s.core.v1.PersistentVolumeClaim("northstar-mods-pvc", {
         accessModes: ["ReadWriteOnce"],
         resources: {
             requests: {
-                storage: "20Gi",   // Adjust the size as needed
+                storage: "20Gi",
             },
         },
         storageClassName: "rook-ceph-block",
