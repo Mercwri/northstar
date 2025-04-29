@@ -25,6 +25,15 @@ const nsdedicated = new docker.Image("nsded-image", {
     },
 });
 
+const thunderfetch = new docker.Image("thunderfetch-image", {
+    imageName: `${registry}/thunderfetch:latest`,
+    build: {
+        context: "./thunderfetch",
+        platform: "linux/amd64",
+        dockerfile: "thunderfetch/Dockerfile",
+    },
+});
+
 const ns = new k8s.core.v1.Namespace("northstar", { metadata: { name: "northstar" } });
 
 const tfpvc = new k8s.core.v1.PersistentVolumeClaim("northstar-pvc", {
@@ -77,11 +86,12 @@ const appLabels = { app: "northstar" };
 const deployment = new k8s.apps.v1.Deployment("northstar", {
     metadata: { namespace: ns.metadata.name },
     spec: {
+        strategy: { type: "Recreate",},
         selector: { matchLabels: appLabels },
         replicas: 1,
         template: {
             metadata: { labels: appLabels },
-            spec: { 
+            spec: {
                 containers: [
                     { 
                         name: "northstar", 
@@ -121,6 +131,21 @@ const deployment = new k8s.apps.v1.Deployment("northstar", {
                         runAsGroup: 1000,
                     }
                 },
+                {
+                    name: "thunderfetch",
+                    image: thunderfetch.imageName,
+                    volumeMounts: [
+                        { name: "ns-pvc", mountPath: "/mnt/titanfall" },
+                        { name: "ns-mods-pvc", mountPath: "/mnt/mods" },
+                    ],
+                    securityContext: {
+                        runAsUser: 1000,
+                        runAsGroup: 1000,
+                    },
+                    env: [
+                        { name: "package", value: "Zanieon-Extraction_Gamemode-1.2.1.zip" },
+                    ]
+                }
             ],
             volumes: [
                 { name: "ns-pvc", persistentVolumeClaim: { claimName: tfpvc.metadata.name } },
