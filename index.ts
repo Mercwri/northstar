@@ -4,6 +4,8 @@ import * as pulumi from "@pulumi/pulumi";
 
 const config = new pulumi.Config();
 const registry = config.require("registry");
+const servername = config.require("servername");
+const serverdesc = config.require("serverdesc");
 
 const nsfetch = new docker.Image("nsfetch-image", {
     imageName: `${registry}/nsfetch:latest`,
@@ -56,8 +58,8 @@ const configMap = new k8s.core.v1.ConfigMap("northstar-config", {
     metadata: { namespace: ns.metadata.name },
     data: {
         "NS_PORT": "37015",
-        "NS_SERVER_NAME": "Mercwri Extraction",
-        "NS_SERVER_DESC": "Mercwri Extraction",
+        "NS_SERVER_NAME": servername,
+        "NS_SERVER_DESC": serverdesc,
         "NS_EXTRA_ARGUMENTS" : `+setplaylist Extraction # Attrition
 +mp_gamemode Extraction # Attrition
 +map mp_angel_city
